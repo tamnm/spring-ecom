@@ -22,7 +22,4 @@ public class LightProduct {
         this.sku = sku;
         this.name = name;
     }
-
-    public LightProduct() {
-    }
 }

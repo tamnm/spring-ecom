@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -64,6 +65,14 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
                                           Collections.singletonList(exception.getLocalizedMessage()));
     }
 
+    @Override
+    protected @NotNull ResponseEntity<Object> handleHttpMediaTypeNotSupported(@NotNull HttpMediaTypeNotSupportedException ex,
+                                                                              @NotNull HttpHeaders headers,
+                                                                              @NotNull HttpStatus status,
+                                                                              @NotNull WebRequest request) {
+        return getExceptionResponseEntity(ex, status, request, Collections.singletonList(ex.getLocalizedMessage()));
+    }
+
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException exception,
                                                             WebRequest request) {
@@ -102,10 +111,10 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Build detailed information about the exception in the response
      */
-    private ResponseEntity<Object> getExceptionResponseEntity(final Exception exception,
-                                                              final HttpStatus status,
-                                                              final WebRequest request,
-                                                              final List<String> errors) {
+    private @NotNull ResponseEntity<Object> getExceptionResponseEntity(@NotNull final Exception exception,
+                                                              @NotNull final HttpStatus status,
+                                                              @NotNull final WebRequest request,
+                                                              @NotNull final List<String> errors) {
         var errorObject = ErrorObject.build(request, status, errors);
         errorObject.setType(exception.getClass().getSimpleName());
 
