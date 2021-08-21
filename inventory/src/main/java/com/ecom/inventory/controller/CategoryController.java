@@ -9,7 +9,6 @@ import com.ecom.models.CategoryDto;
 import com.ecom.models.CategorySubmitDto;
 import com.ecom.restlib.exception.DataNotFoundException;
 import io.swagger.annotations.ApiParam;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,14 +49,14 @@ public class CategoryController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CategoryDto> update(@PathVariable("id") @NotNull Long id,
+    public CategoryDto update(@PathVariable("id") @NotNull Long id,
                                               @RequestBody CategorySubmitDto updateCategoryDto) {
 
         var opt = categoryService.findById(id);
         if (opt.isPresent()) {
             var entity = opt.get();
             entity.setName(updateCategoryDto.getName());
-            return ResponseEntity.ok(CategoryMapper.toDto(categoryService.save(entity)));
+            return CategoryMapper.toDto(categoryService.save(entity));
         } else {
             throw new DataNotFoundException("Product was not found for update");
         }
