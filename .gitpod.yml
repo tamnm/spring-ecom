@@ -2,7 +2,7 @@ image: gitpod/workspace-java-11
 
 vscode:
   extensions:
-    - pivotal.vscode-spring-boot
+    - Pivotal.vscode-boot-dev-pack
     - vscjava.vscode-java-pack
 
 tasks:
