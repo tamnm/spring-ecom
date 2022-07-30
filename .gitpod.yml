@@ -7,8 +7,6 @@ vscode:
 
 tasks:
 - init: mvn dependency:go-offline package -DskipTests
-  command: java -jar inventory/target/*.jar
-  name: run
 
 # exposed ports
 ports:
